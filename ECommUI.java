@@ -19,7 +19,7 @@ public class ECommUI {
 
         //Buyer Menu
         //1. View All Products
-        //2. Search for an item
+        //2. Search Products
         //3. Logout
 
         //Seller Menu
