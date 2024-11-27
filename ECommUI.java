@@ -13,10 +13,21 @@ public class ECommUI {
 
         //Main Menu Options (Depends on user type logged in)
         //Admin Menu
+        //1. View User List
+        //2. View Product List
+        //3. Logout
 
         //Buyer Menu
+        //1. View All Products
+        //2. Search for an item
+        //3. Logout
 
         //Seller Menu
+        //1. View All Currently Listed Products
+        //2. Add New Product
+        //3. Update Currently Listed Product
+        //4. Delete Currently Listed Product
+        //5. Logout
 
     }
 }
