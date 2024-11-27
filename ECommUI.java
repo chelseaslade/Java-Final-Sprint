@@ -1,3 +1,7 @@
+//Imports
+import java.sql.*;
+import java.util.Scanner;
+
 public class ECommUI {
     public static void main(String[] args) {
         //Construct test objects (as needed)
