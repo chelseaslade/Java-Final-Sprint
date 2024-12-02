@@ -1,9 +1,9 @@
 import java.sql.*;
 
 public class DBConnection {
-    private static final String url = "";
+    private static final String url = "postgres://postgres:dbSprint2024@localhost:5432/Java-Final-Sprint";
     private static final String user = "postgres";
-    private static final String password = "";
+    private static final String password = "dbSprint2024";
  
     public static Connection getCon()
     {
