@@ -116,6 +116,43 @@ public class ECommUI {
 
     }
 
+   // Admin Menu
+   private static void showAdminMenu(Scanner sc, UserService userService, ProductDAO productDAO) {
+    boolean adminLoop = true;
+    while (adminLoop) {
+        System.out.println("\n=== Admin Menu ===");
+        System.out.println("1: View All Users");
+        System.out.println("2: Delete User");
+        System.out.println("3: View All Products");
+        System.out.println("4: Logout");
+
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1:
+                userService.getAllUsers().forEach(System.out::println); // Placeholder
+                break;
+            case 2:
+                System.out.print("Enter User ID to delete: ");
+                int userId = sc.nextInt();
+                sc.nextLine();
+                userService.deleteUser(userId); // Placeholder
+                System.out.println("User deleted successfully.");
+                break;
+            case 3:
+                productDAO.getAllProducts().forEach(System.out::println); // Placeholder
+                break;
+            case 4:
+                adminLoop = false;
+                System.out.println("Logging out...");
+                break;
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+    }
+}
+
     // Buyer menu
     private static void showBuyerMenu(Scanner sc, ProductDAO productDAO) {
         boolean buyerLoop = true;
