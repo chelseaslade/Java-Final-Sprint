@@ -19,7 +19,11 @@ public class ECommUI {
     }
 
         //Init scanner
-        UserService userService = new UserService();
+        UserService userService = new UserService(); 
+
+        // Placeholder for product related actions.
+        ProductDAO productDAO = new ProductDAO(); 
+
         Scanner sc = new Scanner(System.in);
 
         //Loop for initial menu needed ("Exit" option closes entire program)
@@ -56,13 +60,91 @@ public class ECommUI {
 
             userService.addUser(username, password, email, role);
 
+            // Message showing registration has been successful.
+            System.out.println("Registration successful!");
+            break;
+
             //Login
             case 2: 
+               System.out.println("Enter username: ");
+               String loginUsername = sc.nextLine();
+               System.out.println("Enter password: ");
+               String loginPassword = sc.nextLine();
+
+               // Placeholder for authentication logic.
+                String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
+                    
+                if (roleLoggedIn == null) {
+                    System.out.println("Login failed. Try again.");
+                } else {
+                    System.out.println("Login successful! Welcome, " + roleLoggedIn);
+                     // Add similar menus for "seller" and "admin" roles later
+                     // Added
+                    switch (roleLoggedIn.toLowerCase()) {
+                        case "buyer":
+                            showBuyerMenu(sc, productDAO);
+                            break;
+                        case "seller":
+                            showSellerMenu(sc, productDAO);
+                            break;
+                        case "admin":
+                            showAdminMenu(sc, userService, productDAO);
+                            break;
+                        default:
+                        System.out.println("Invalid role.");
+                        
+                        }
+
+                    }
+                    break;
+
 
             //Exit
             case 3:
             mainLoop = false;
+            // Message showing the user has exited.
+            System.out.println("Goodbye!");
             break;
+            
+            // Default message incase user input is incorrect.
+            default:
+            System.out.println("Invalid option. Please try again.");
+        }
+    }
+
+    sc.close();
+
+    }
+
+    // Buyer menu
+    private static void showBuyerMenu(Scanner sc, ProductDAO productDAO) {
+        boolean buyerLoop = true;
+        while (buyerLoop) {
+            System.out.println("\n--- Buyer Menu ---");
+            System.out.println("1: View All Products");
+            System.out.println("2: Search Products");
+            System.out.println("3: Logout");
+
+            int choice = sc.nextInt();
+            sc.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    System.out.println("\n--- Product List ---");
+                    productDAO.getAllProducts().forEach(System.out::println); // Placeholder.
+                    break;
+                case 2:
+                    System.out.print("Enter product name or category: ");
+                    String keyword = sc.nextLine();
+                    productDAO.searchProducts(keyword).forEach(System.out::println); // Placeholder.
+                    break;
+                case 3:
+                    buyerLoop = false;
+                    System.out.println("Logging out...");
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
         }
     }
 
@@ -87,4 +169,4 @@ public class ECommUI {
         //5. Logout
 
     }
-}
+
