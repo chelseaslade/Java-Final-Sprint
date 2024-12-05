@@ -1,6 +1,8 @@
 
 public class Seller extends User {
-    Public Seller(String username, String password, String email){
+
+    Public Seller(String username, String password, String email)
+    {
         super(username, password, email, "seller");
     }
 
