@@ -133,7 +133,41 @@ public class ECommUI {
         }
     }
 
+    // Created Buyer menu with options.
+    private static void showBuyerMenu(Scanner sc, UserService userService) {
+    boolean buyerLoop = true; // Placeholder
 
+    while (buyerLoop) {
+        System.out.println("\n--- Buyer Menu ---");
+        System.out.println("1: View All Products");
+        System.out.println("2: Search Products");
+        System.out.println("3: Logout");
+
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1: 
+                System.out.println("\n--- Product List ---");
+                userService.getAllProducts().forEach(System.out::println); // Placeholder
+                break;
+
+            case 2: 
+                System.out.print("Enter product name or category to search: ");
+                String keyword = sc.nextLine();
+                userService.searchProducts(keyword).forEach(System.out::println); // Placeholder
+                break;
+
+            case 3: // Logout
+                buyerLoop = false;
+                System.out.println("Logging out...");
+                break;
+
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+    }
+}
 
         //Loop for main menu needed ("Exit" option to take back to login)
 
@@ -155,5 +189,5 @@ public class ECommUI {
         //4. Delete Currently Listed Product
         //5. Logout
 
-    }
+}
 }
