@@ -120,7 +120,7 @@ public class ECommUI {
    private static void showAdminMenu(Scanner sc, UserService userService, ProductDAO productDAO) {
     boolean adminLoop = true;
     while (adminLoop) {
-        System.out.println("\n=== Admin Menu ===");
+        System.out.println("\n--- Admin Menu ---");
         System.out.println("1: View All Users");
         System.out.println("2: Delete User");
         System.out.println("3: View All Products");
