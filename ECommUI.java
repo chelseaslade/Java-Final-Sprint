@@ -90,6 +90,50 @@ public class ECommUI {
             break;
         }
     }
+    }
+
+    // Created Admin menu and options.
+    private static void showAdminMenu(Scanner sc, UserService userService) {
+    boolean adminLoop = true;
+
+    while (adminLoop) {
+        System.out.println("\n--- Admin Menu ---");
+        System.out.println("1: View All Users");
+        System.out.println("2: Delete a User");
+        System.out.println("3: Logout");
+
+        int choice = sc.nextInt();
+        sc.nextLine(); 
+
+        switch (choice) {
+            case 1: 
+                System.out.println("\n--- User List ---");
+                userService.getAllUsers().forEach(System.out::println); // Placeholder
+                break;
+
+            case 2: 
+                System.out.print("Enter User ID to delete: ");
+                int userId = sc.nextInt();
+                sc.nextLine(); 
+                boolean success = userService.deleteUser(userId); // Placeholder
+                if (success) {
+                    System.out.println("User deleted successfully.");
+                } else {
+                    System.out.println("Failed to delete user. Check User ID.");
+                }
+                break;
+
+            case 3:
+                adminLoop = false;
+                System.out.println("Logging out...");
+                break;
+
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+    }
+
+
 
         //Loop for main menu needed ("Exit" option to take back to login)
 
