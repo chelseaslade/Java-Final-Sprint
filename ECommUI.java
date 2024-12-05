@@ -57,7 +57,12 @@ public class ECommUI {
             userService.addUser(username, password, email, role);
 
             //Login
+            // Added menu options for login.
             case 2: 
+            System.out.println("Enter username: ");
+            String loginUsername = sc.nextLine();
+            System.out.println("Enter password: ");
+            String loginPassword = sc.nextLine();
 
             //Exit
             case 3:
