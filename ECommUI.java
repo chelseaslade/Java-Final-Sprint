@@ -40,7 +40,7 @@ public class ECommUI {
         int choice = sc.nextInt();
         sc.nextLine();
 
-        //Execute Options
+        //Execute Options.
         switch (choice)
         {
             //Register
