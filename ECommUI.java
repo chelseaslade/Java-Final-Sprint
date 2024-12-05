@@ -90,7 +90,7 @@ public class ECommUI {
             break;
         }
     }
-    }
+}
 
     // Created Admin menu and options.
     private static void showAdminMenu(Scanner sc, UserService userService) {
@@ -132,6 +132,7 @@ public class ECommUI {
                 System.out.println("Invalid option. Try again.");
         }
     }
+}
 
     // Created Buyer menu with options.
     private static void showBuyerMenu(Scanner sc, UserService userService) {
@@ -168,6 +169,84 @@ public class ECommUI {
         }
     }
 }
+    //  Created Seller menu with options
+    private static void showSellerMenu(Scanner sc, UserService userService, String sellerUsername) {
+    boolean sellerLoop = true;
+
+    while (sellerLoop) {
+        System.out.println("\n--- Seller Menu ---");
+        System.out.println("1: View My Products");
+        System.out.println("2: Add New Product");
+        System.out.println("3: Update Product");
+        System.out.println("4: Delete Product");
+        System.out.println("5: Logout");
+
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1: 
+                System.out.println("\n--- Your Products ---");
+                userService.getSellerProducts(sellerUsername).forEach(System.out::println); // Placeholder
+                break;
+
+            case 2: 
+                System.out.print("Enter product name: ");
+                String name = sc.nextLine();
+                System.out.print("Enter product category: ");
+                String category = sc.nextLine();
+                System.out.print("Enter product price: ");
+                double price = sc.nextDouble();
+                System.out.print("Enter product quantity: ");
+                int quantity = sc.nextInt();
+                sc.nextLine(); // Consume newline
+
+                userService.addProduct(name, category, price, quantity, sellerUsername); // Placeholder
+                System.out.println("Product added successfully!");
+                break;
+
+            case 3: 
+                System.out.print("Enter Product ID to update: ");
+                int productId = sc.nextInt();
+                sc.nextLine(); 
+                System.out.print("Enter new price: ");
+                double newPrice = sc.nextDouble();
+                System.out.print("Enter new quantity: ");
+                int newQuantity = sc.nextInt();
+                sc.nextLine(); 
+
+                boolean updated = userService.updateProduct(productId, newPrice, newQuantity, sellerUsername); // Placeholder
+                if (updated) {
+                    System.out.println("Product updated successfully!");
+                } else {
+                    System.out.println("Failed to update product. Check Product ID.");
+                }
+                break;
+
+            case 4: 
+                System.out.print("Enter Product ID to delete: ");
+                int deleteProductId = sc.nextInt();
+                sc.nextLine(); 
+
+                boolean deleted = userService.deleteProduct(deleteProductId, sellerUsername); // Placeholder
+                if (deleted) {
+                    System.out.println("Product deleted successfully!");
+                } else {
+                    System.out.println("Failed to delete product. Check Product ID.");
+                }
+                break;
+
+            case 5: // Logout
+                sellerLoop = false;
+                System.out.println("Logging out...");
+                break;
+
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+    }
+}
+    
 
         //Loop for main menu needed ("Exit" option to take back to login)
 
