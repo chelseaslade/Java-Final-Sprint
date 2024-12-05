@@ -64,6 +64,26 @@ public class ECommUI {
             System.out.println("Enter password: ");
             String loginPassword = sc.nextLine();
 
+            // Authenticating user roll.
+            String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); // Placeholder
+            if (roleLoggedIn == null) {
+                System.out.println("Login failed. Try again.");
+            } else {
+                System.out.println("Login successful! Welcome, " + roleLoggedIn);
+
+                switch (roleLoggedIn.toLowerCase()) {
+                    case "buyer":
+                        showBuyerMenu(sc, userService); // Placeholder
+                        break;
+                    case "admin":
+                        showAdminMenu(sc, userService); // Placeholder
+                        break;
+                    default:
+                   System.out.println("Role not recognized.");
+                }
+            }
+            break;
+
             //Exit
             case 3:
             mainLoop = false;
