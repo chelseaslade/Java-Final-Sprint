@@ -61,25 +61,37 @@ public class ECommUI {
             String role = sc.nextLine();
 
             //Create object based on role 
-            if (role == "admin")
+            User user = null;
+            if (role.equalsIgnoreCase("admin"))
             {
-                new Admin(username, password, email);
+                user = new Admin(username, password, email);
             }
-            else if (role == "buyer")
+            else if (role.equalsIgnoreCase("buyer"))
             {
-                new Buyer(username, password, email);
+                user = new Buyer(username, password, email);
             }
-            else if (role == "seller")
+            else if (role.equalsIgnoreCase("seller"))
             {
-                new Seller(username, password, email);
+                user = new Seller(username, password, email);
             }
 
             //Add the user to database
-            userService.addUser(username, password, email, role);
+            userService.addUser(user);
 
-            // Message showing registration has been successful.
+            //Query to check if added
+            boolean isAdded = userService.isUserInDatabase(user.getUsername());
+            if (isAdded)
+            {
+            //Success
             System.out.println("Registration successful!");
             break;
+            }
+
+            else 
+            {
+            //Failure
+            System.out.println("Registration unsuccessful. Are you sure the user does not already exist?");
+            }
 
             //Login
             // case 2: 

@@ -4,16 +4,16 @@ import java.util.List;
 
 public class UserDAO {
     //Add new user to Users table in database
-    public void addUser(String username, String password, String email, String role)
+    public void addUser(User user)
     {
         String query = "INSERT INTO Users (username, password, email, role) VALUES (?, ?, ?, ?)";
         try (Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query))
         {
-            statement.setString(1, username);
-            statement.setString(2, password);
-            statement.setString(3, email);
-            statement.setString(4, role);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getRole());
             statement.executeUpdate();
         }
         catch(SQLException e)
@@ -54,6 +54,24 @@ public class UserDAO {
     public void editUser(int userID)
     {
         
+    }
+
+    //User in database validation
+    public boolean isUserInDatabase(String username) throws SQLException
+    {
+        String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
+        
+        try (Connection con = DBConnection.getCon();
+        PreparedStatement statement = con.prepareStatement(query)) {
+       
+       statement.setString(1, username);
+       try (ResultSet resultSet = statement.executeQuery()) {
+           if (resultSet.next()) {
+               return resultSet.getInt(1) > 0; // Return true if count > 0
+           }
+       }
+   }
+   return false;
     }
 
 }
