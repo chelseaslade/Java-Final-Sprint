@@ -43,4 +43,17 @@ public class UserDAO {
         }
         return users;
     }
+
+    //Delete User
+    public void deleteUser(int userID)
+    {
+
+    }
+
+    //Edit User
+    public void editUser(int userID)
+    {
+        
+    }
+
 }

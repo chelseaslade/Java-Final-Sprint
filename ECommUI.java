@@ -18,12 +18,13 @@ public class ECommUI {
         e.printStackTrace();
     }
 
-        //Init scanner
+        //UserService init
         UserService userService = new UserService(); 
 
-        // Placeholder for product related actions.
-        ProductDAO productDAO = new ProductDAO(); 
+        //ProductService init
+        ProductService productService = new ProductService(); 
 
+        //Scanner init
         Scanner sc = new Scanner(System.in);
 
         //Loop for initial menu needed ("Exit" option closes entire program)
@@ -58,6 +59,7 @@ public class ECommUI {
             System.out.println("Enter role (buyer, seller, or admin) ");
             String role = sc.nextLine();
 
+            //Add the user to database
             userService.addUser(username, password, email, role);
 
             // Message showing registration has been successful.
@@ -131,17 +133,17 @@ public class ECommUI {
 
         switch (choice) {
             case 1:
-                userService.viewAllUsers().forEach(System.out::println); // Placeholder
+                userService.viewAllUsers().forEach(System.out::println); 
                 break;
             case 2:
                 System.out.print("Enter User ID to delete: ");
                 int userId = sc.nextInt();
                 sc.nextLine();
-                userService.deleteUser(userId); // Placeholder
+                userService.deleteUser(userId); 
                 System.out.println("User deleted successfully.");
                 break;
             case 3:
-                productDAO.getAllProducts().forEach(System.out::println); // Placeholder
+                productService.viewAllProducts().forEach(System.out::println); // Placeholder
                 break;
             case 4:
                 adminLoop = false;
@@ -168,12 +170,12 @@ public class ECommUI {
             switch (choice) {
                 case 1:
                     System.out.println("\n--- Product List ---");
-                    productDAO.getAllProducts().forEach(System.out::println); // Placeholder.
+                    productService.viewAllProducts().forEach(System.out::println); // Placeholder.
                     break;
                 case 2:
                     System.out.print("Enter product name or category: ");
                     String keyword = sc.nextLine();
-                    productDAO.searchProducts(keyword).forEach(System.out::println); // Placeholder.
+                    productService.searchProducts(keyword).forEach(System.out::println); // Placeholder.
                     break;
                 case 3:
                     buyerLoop = false;

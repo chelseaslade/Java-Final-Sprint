@@ -1,14 +1,32 @@
 import java.sql.*;
-import java.util.ArrayLists;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-//ADD DB CONNECTIONS 
 
+//View all products
+public List<String> viewAllProducts()
+{
+    List<String> products = new ArrayList<>();
+    String query = "SELECT * FROM Products";
 
+    try (Connection con = DBConnection.getCon();
+    PreparedStatement statement = con.prepareStatement(query);
+    ResultSet rs = statement.executeQuery();)
+    {
+        while (rs.next())
+        {
+            products.add(rs.getString("name"));
+        }
+    }
+    catch(SQLException e)
+    {
+        e.printStackTrace();
+    }
+    return products;
+}
 
-
-//PRODUCT: 
+//Add product
 public static boolean addProduct(Product product){
     String query = "INSERT INTO products(name, price, quantity, seller_id) VALUES(?,?,?,?)";
     try (PreparedStatement statement = con.prepareStatement(query)){
@@ -39,6 +57,7 @@ public static boolean updateProduct(Product product) {
         return false;
     }
 }
+
 // DELETE PRODUCT
 public static boolean deleteProduct(int productId) {
     String query = "DELETE FROM products WHERE id = ?";
@@ -51,6 +70,10 @@ public static boolean deleteProduct(int productId) {
         return false;
     }
 }
+
+//Search Products
+public void searchProducts()
+{}
 
 
 }

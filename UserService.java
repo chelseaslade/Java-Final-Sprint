@@ -14,4 +14,9 @@ public class UserService {
     {
        return userDao.viewAllUsers();
     }
+
+    public void deleteUser(int userID)
+    {
+        userDao.deleteUser(userID);
+    }
 }
