@@ -1,6 +1,7 @@
 //Imports
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ECommUI {
@@ -177,7 +178,18 @@ public class ECommUI {
                     String searchType = sc.nextLine();
                     System.out.print("Enter search query: ");
                     String searchQuery = sc.nextLine();
-                    productService.searchProducts(searchType, searchQuery).forEach(System.out::println);
+                    List<String> searchResults = productService.searchProducts(searchType, searchQuery);
+
+                    //If no products returned
+                    if (searchResults.isEmpty())
+                    {
+                        System.out.println("No products found for the search query provided.");
+                    }
+                    else
+                    {
+                        searchResults.forEach(System.out::println); //Print each result found
+                    }
+
                     break;
                 case 3:
                     buyerLoop = false;
