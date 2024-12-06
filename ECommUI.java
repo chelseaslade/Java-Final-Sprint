@@ -60,6 +60,20 @@ public class ECommUI {
             System.out.println("Enter role (buyer, seller, or admin) ");
             String role = sc.nextLine();
 
+            //Create object based on role 
+            if (role == "admin")
+            {
+                new Admin(username, password, email);
+            }
+            else if (role == "buyer")
+            {
+                new Buyer(username, password, email);
+            }
+            else if (role == "seller")
+            {
+                new Seller(username, password, email);
+            }
+
             //Add the user to database
             userService.addUser(username, password, email, role);
 
@@ -68,38 +82,38 @@ public class ECommUI {
             break;
 
             //Login
-            case 2: 
-               System.out.println("Enter username: ");
-               String loginUsername = sc.nextLine();
-               System.out.println("Enter password: ");
-               String loginPassword = sc.nextLine();
+            // case 2: 
+            //    System.out.println("Enter username: ");
+            //    String loginUsername = sc.nextLine();
+            //    System.out.println("Enter password: ");
+            //    String loginPassword = sc.nextLine();
 
                // Placeholder for authentication logic.
-                String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
+                // String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
                     
-                if (roleLoggedIn == null) {
-                    System.out.println("Login failed. Try again.");
-                } else {
-                    System.out.println("Login successful! Welcome, " + roleLoggedIn);
-                     // Add similar menus for "seller" and "admin" roles later
-                     // Added
-                    switch (roleLoggedIn.toLowerCase()) {
-                        case "buyer":
-                            showBuyerMenu(sc, productService);
-                            break;
-                        case "seller":
-                            showSellerMenu(sc, productService);
-                            break;
-                        case "admin":
-                            showAdminMenu(sc, userService, productSer);
-                            break;
-                        default:
-                        System.out.println("Invalid role.");
+                // if (roleLoggedIn == null) {
+                //     System.out.println("Login failed. Try again.");
+                // } else {
+                //     System.out.println("Login successful! Welcome, " + roleLoggedIn);
+                //      // Add similar menus for "seller" and "admin" roles later
+                //      // Added
+                //     switch (roleLoggedIn.toLowerCase()) {
+                //         case "buyer":
+                //             showBuyerMenu(sc, productService);
+                //             break;
+                //         case "seller":
+                //             showSellerMenu(sc, productService);
+                //             break;
+                //         case "admin":
+                //             showAdminMenu(sc, userService, productSer);
+                //             break;
+                //         default:
+                //         System.out.println("Invalid role.");
                         
-                        }
+                //         }
 
-                    }
-                    break;
+                //     }
+                //     break;
 
 
             //Exit
@@ -189,7 +203,6 @@ public class ECommUI {
                     {
                         searchResults.forEach(System.out::println); //Print each result found
                     }
-
                     break;
                 case 3:
                     buyerLoop = false;
