@@ -26,19 +26,22 @@ public List<String> viewAllProducts()
     return products;
 }
 
-//Add product
-public static boolean addProduct(Product product){
-    String query = "INSERT INTO products(name, price, quantity, seller_id) VALUES(?,?,?,?)";
-    try (PreparedStatement statement = con.prepareStatement(query)){
+// Add product
+public void addProduct(Product product)
+{
+    String query = "INSERT INTO Users (name, price, quantity, seller_id) VALUES (?, ?, ?, ?)";
+    try (Connection con = DBConnection.getCon();
+    PreparedStatement statement = con.prepareStatement(query))
+    {
         statement.setString(1, product.getName());
-        statement.setBigDecimal(2, product.getPrice());
+        statement.setDouble(2, product.getPrice());
         statement.setInt(3, product.getQuantity());
         statement.setInt(4, product.getSellerId());
-        int rowsInserted = statement.executeUpdate();
-        return rowsInserted > 0 ;
-    } catch(SQLException e){
+        statement.executeUpdate();
+    }
+    catch(SQLException e)
+    {
         e.printStackTrace();
-        return false;
     }
 }
 
@@ -74,6 +77,5 @@ public static boolean deleteProduct(int productId) {
 //Search Products
 public void searchProducts()
 {}
-
 
 }

@@ -119,7 +119,7 @@ public class ECommUI {
     }
 
    // Admin Menu
-   private static void showAdminMenu(Scanner sc, UserService userService, ProductDAO productDAO) {
+   private static void showAdminMenu(Scanner sc, UserService userService, ProductService productService) {
     boolean adminLoop = true;
     while (adminLoop) {
         System.out.println("\n--- Admin Menu ---");
@@ -143,7 +143,7 @@ public class ECommUI {
                 System.out.println("User deleted successfully.");
                 break;
             case 3:
-                productService.viewAllProducts().forEach(System.out::println); // Placeholder
+                productService.viewAllProducts().forEach(System.out::println); 
                 break;
             case 4:
                 adminLoop = false;
@@ -156,7 +156,7 @@ public class ECommUI {
 }
 
     // Buyer menu
-    private static void showBuyerMenu(Scanner sc, ProductDAO productDAO) {
+    private static void showBuyerMenu(Scanner sc, ProductService productService) {
         boolean buyerLoop = true;
         while (buyerLoop) {
             System.out.println("\n--- Buyer Menu ---");
