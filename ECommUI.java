@@ -84,13 +84,13 @@ public class ECommUI {
                      // Added
                     switch (roleLoggedIn.toLowerCase()) {
                         case "buyer":
-                            showBuyerMenu(sc, productDAO);
+                            showBuyerMenu(sc, productService);
                             break;
                         case "seller":
-                            showSellerMenu(sc, productDAO);
+                            showSellerMenu(sc, productService);
                             break;
                         case "admin":
-                            showAdminMenu(sc, userService, productDAO);
+                            showAdminMenu(sc, userService, productSer);
                             break;
                         default:
                         System.out.println("Invalid role.");
@@ -170,12 +170,14 @@ public class ECommUI {
             switch (choice) {
                 case 1:
                     System.out.println("\n--- Product List ---");
-                    productService.viewAllProducts().forEach(System.out::println); // Placeholder.
+                    productService.viewAllProducts().forEach(System.out::println); 
                     break;
                 case 2:
-                    System.out.print("Enter product name or category: ");
-                    String keyword = sc.nextLine();
-                    productService.searchProducts(keyword).forEach(System.out::println); // Placeholder.
+                    System.out.println("Enter search type ('name', 'product_id, or 'seller_id': ");
+                    String searchType = sc.nextLine();
+                    System.out.print("Enter search query: ");
+                    String searchQuery = sc.nextLine();
+                    productService.searchProducts(searchType, searchQuery).forEach(System.out::println);
                     break;
                 case 3:
                     buyerLoop = false;

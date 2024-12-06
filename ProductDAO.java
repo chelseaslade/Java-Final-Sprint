@@ -29,7 +29,7 @@ public List<String> viewAllProducts()
 // Add product
 public void addProduct(Product product)
 {
-    String query = "INSERT INTO Users (name, price, quantity, seller_id) VALUES (?, ?, ?, ?)";
+    String query = "INSERT INTO Products (name, price, quantity, seller_id) VALUES (?, ?, ?, ?)";
     try (Connection con = DBConnection.getCon();
     PreparedStatement statement = con.prepareStatement(query))
     {
@@ -46,36 +46,102 @@ public void addProduct(Product product)
 }
 
 // UPDATE PRODUCT DETAIL
-public static boolean updateProduct(Product product) {
+public void updateProduct(Product product) 
+{
     String query = "UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?";
-    try (PreparedStatement statement = connection.prepareStatement(query)) {
+    try (
+        Connection con = DBConnection.getCon();
+        PreparedStatement statement = con.prepareStatement(query)) 
+        {
         statement.setString(1, product.getName());
-        statement.setBigDecimal(2, product.getPrice());
+        statement.setDouble(2, product.getPrice());
         statement.setInt(3, product.getQuantity());
         statement.setInt(4, product.getId());
-        int rowsUpdated = statement.executeUpdate();
-        return rowsUpdated > 0;
-    } catch (SQLException e) {
+        statement.executeUpdate();
+    } 
+    catch (SQLException e) {
         e.printStackTrace();
-        return false;
     }
 }
 
 // DELETE PRODUCT
-public static boolean deleteProduct(int productId) {
+public void deleteProduct(int productId) {
     String query = "DELETE FROM products WHERE id = ?";
-    try (PreparedStatement statement = connection.prepareStatement(query)) {
+    try (
+        Connection con = DBConnection.getCon();
+        PreparedStatement statement = con.prepareStatement(query)) 
+        {
         statement.setInt(1, productId);
-        int rowsDeleted = statement.executeUpdate();
-        return rowsDeleted > 0;
-    } catch (SQLException e) {
+        statement.executeUpdate();
+    } 
+    catch (SQLException e) {
         e.printStackTrace();
-        return false;
     }
 }
 
 //Search Products
-public void searchProducts()
-{}
+public List<String> searchProducts(String searchType, String searchQuery)
+{
+    List<String> productSearch = new ArrayList<>();
+    String query = "";
+
+    //Query based on search type
+    if ("name".equalsIgnoreCase(searchType))
+    {
+        query = "SELECT * FROM Products WHERE name ILIKE ?";
+    }
+    else if ("product_id".equalsIgnoreCase(searchType))
+    {
+        query = "SELECT * FROM Products WHERE product_id = ?";
+    }
+    else if ("seller_id".equalsIgnoreCase(searchType))
+    {
+        query = "SELECT * FROM Products where seller_id = ?";
+    }
+    else 
+    {
+        System.out.println("Invalid search type selection, please select from 'name', 'product_id', or 'seller_id'.");
+        return productSearch;
+    }
+
+    try (Connection con = DBConnection.getCon();
+    PreparedStatement statement = con.prepareStatement(query);)
+    {
+        //Set search query
+        if ("name".equalsIgnoreCase(searchType))
+        {
+            statement.setString(1, "%" + searchQuery + "%"); //Allows partial matches
+        }
+        else 
+        {
+            statement.setInt(1, Integer.parseInt(searchQuery)); //Search by int for seller and product id
+        }
+
+        //Execute Query
+        try (ResultSet rs = statement.executeQuery())
+        {
+            while (rs.next())
+            {
+                //Display product details
+                String productDetails = String.format("Product ID: %d, Name: %s, Price: %.2f, Quantity: %d, Seller ID: %d",
+                rs.getInt("product_id"),
+                rs.getString("name"),
+                rs.getDouble("price"),
+                rs.getInt("quantity"),
+                rs.getInt("seller_id")
+                );
+                //Add product details to productSearch list to be returned
+                productSearch.add(productDetails);
+            }
+        }
+
+    }
+
+    catch(SQLException e)
+    {
+        e.printStackTrace();
+    }
+    return productSearch;
+}
 
 }
