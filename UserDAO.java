@@ -47,20 +47,44 @@ public class UserDAO {
     //Delete User
     public void deleteUser(int userID)
     {
-
+        String query = "DELETE FROM Users WHERE id = ?";
+        try (
+            Connection con = DBConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query)) 
+            {
+            statement.setInt(1, userID);
+            statement.executeUpdate();
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    //Edit User
-    public void editUser(int userID)
-    {
-        
-    }
+    //Dont need?
+    // //Edit User
+    // public void editUser(User user)
+    // {
+    //     String query = "UPDATE Users SET username = ?, password = ?, email = ?, role = ? WHERE id = ?";
+    //     try (
+    //         Connection con = DBConnection.getCon();
+    //         PreparedStatement statement = con.prepareStatement(query)) 
+    //         {
+    //         statement.setString(1, user.getUsername());
+    //         statement.setString(2, user.getPassword());
+    //         statement.setString(3, user.getEmail());
+    //         statement.setInt(4, user.getId());
+    //         statement.executeUpdate();
+    //     } 
+    //     catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
     //User in database validation
     public boolean isUserInDatabase(String username) throws SQLException
     {
         String query = "SELECT COUNT(*) FROM Users WHERE username = ?";
-        
+
         try (Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) {
        

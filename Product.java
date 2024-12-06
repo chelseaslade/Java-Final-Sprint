@@ -31,7 +31,7 @@ public class Product {
         return this.price;
     }
     public void setPrice(double price){
-        this.price = getPrice();
+        this.price = price;
     }
     public int getQuantity(){
         return quantity; 

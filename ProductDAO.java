@@ -48,7 +48,7 @@ public void addProduct(Product product)
 // UPDATE PRODUCT DETAIL
 public void updateProduct(Product product) 
 {
-    String query = "UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?";
+    String query = "UPDATE Products SET name = ?, price = ?, quantity = ? WHERE id = ?";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) 
@@ -65,13 +65,13 @@ public void updateProduct(Product product)
 }
 
 // DELETE PRODUCT
-public void deleteProduct(int productId) {
-    String query = "DELETE FROM products WHERE id = ?";
+public void deleteProduct(int productID) {
+    String query = "DELETE FROM Products WHERE id = ?";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) 
         {
-        statement.setInt(1, productId);
+        statement.setInt(1, productID);
         statement.executeUpdate();
     } 
     catch (SQLException e) {
