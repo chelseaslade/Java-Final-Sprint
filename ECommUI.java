@@ -93,39 +93,39 @@ public class ECommUI {
             System.out.println("Registration unsuccessful. Are you sure the user does not already exist?");
             }
 
-            //Login
-            // case 2: 
-            //    System.out.println("Enter username: ");
-            //    String loginUsername = sc.nextLine();
-            //    System.out.println("Enter password: ");
-            //    String loginPassword = sc.nextLine();
+            // Login
+            case 2: 
+               System.out.println("Enter username: ");
+               String loginUsername = sc.nextLine();
+               System.out.println("Enter password: ");
+               String loginPassword = sc.nextLine();
 
-               // Placeholder for authentication logic.
-                // String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
+            //    Placeholder for authentication logic.
+                String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
                     
-                // if (roleLoggedIn == null) {
-                //     System.out.println("Login failed. Try again.");
-                // } else {
-                //     System.out.println("Login successful! Welcome, " + roleLoggedIn);
-                //      // Add similar menus for "seller" and "admin" roles later
-                //      // Added
-                //     switch (roleLoggedIn.toLowerCase()) {
-                //         case "buyer":
-                //             showBuyerMenu(sc, productService);
-                //             break;
-                //         case "seller":
-                //             showSellerMenu(sc, productService);
-                //             break;
-                //         case "admin":
-                //             showAdminMenu(sc, userService, productSer);
-                //             break;
-                //         default:
-                //         System.out.println("Invalid role.");
+                if (roleLoggedIn == null) {
+                    System.out.println("Login failed. Try again.");
+                } else {
+                    System.out.println("Login successful! Welcome, " + roleLoggedIn);
+                     // Add similar menus for "seller" and "admin" roles later
+                     // Added
+                    switch (roleLoggedIn.toLowerCase()) {
+                        case "buyer":
+                            showBuyerMenu(sc, productService);
+                            break;
+                        case "seller":
+                            showSellerMenu(sc, productService);
+                            break;
+                        case "admin":
+                            showAdminMenu(sc, userService, productService);
+                            break;
+                        default:
+                        System.out.println("Invalid role.");
                         
-                //         }
+                        }
 
-                //     }
-                //     break;
+                    }
+                    break;
 
 
             //Exit
@@ -226,4 +226,96 @@ public class ECommUI {
         }
     }
 
+    //  Created Seller menu with options
+    private static void showSellerMenu(Scanner sc, ProductService productService, String sellerUsername) {
+
+        boolean sellerLoop = true;
+
+        while (sellerLoop) {
+        System.out.println("\n--- Seller Menu ---");
+        System.out.println("1: View My Products");
+        System.out.println("2: Add New Product");
+        System.out.println("3: Update Product");
+        System.out.println("4: Delete Product");
+        System.out.println("5: Logout");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch (choice) {
+            case 1: 
+                System.out.println("\n--- Your Products ---");
+                //Need to change to search by sellerID instead of username
+                productService.searchProducts("seller_id", sellerUsername).forEach(System.out::println); // Placeholder
+                break;
+
+            case 2: 
+                System.out.print("Enter product name: ");
+                String name = sc.nextLine();
+                System.out.print("Enter product price: ");
+                double price = sc.nextDouble();
+                System.out.print("Enter product quantity: ");
+                int quantity = sc.nextInt();
+                sc.nextLine(); // Consume newline
+
+                //Set up to get sellerID based off user signed in.... To create newProduct
+
+                Product newProduct = new Product(name, price, quantity, sellerID);
+
+                productService.addProduct(newProduct); 
+                System.out.println("Product added successfully!");
+                break;
+
+            case 3: 
+                System.out.print("Enter Product ID to update: ");
+                int productId = sc.nextInt();
+                sc.nextLine(); 
+
+                //Added change name in update
+                System.out.println("Enter new name: ");
+                String newName = sc.nextLine();
+                System.out.print("Enter new price: ");
+                double newPrice = sc.nextDouble();
+                System.out.print("Enter new quantity: ");
+                int newQuantity = sc.nextInt();
+                sc.nextLine(); 
+
+                Product productUpdate = new Product(newName, newPrice, newQuantity);
+
+                boolean updated = productService.updateProduct(productUpdate); // Placeholder
+
+                if (updated) {
+                    System.out.println("Product updated successfully!");
+                } else {
+                    System.out.println("Failed to update product. Check Product ID.");
+                }
+                break;
+
+            case 4: 
+                System.out.print("Enter Product ID to delete: ");
+                int deleteProductId = sc.nextInt();
+                sc.nextLine(); 
+
+                //Delete item from database
+                productService.deleteProduct(deleteProductId);
+            
+                //Check if item is in database
+                boolean productInDatabase = productService.isProductInDatabase(deleteProductId); // Placeholder
+
+                if (!productInDatabase) {
+                    System.out.println("Product deleted successfully!");
+                } else {
+                    System.out.println("Failed to delete product. Check Product ID.");
+                }
+                break;
+            case 5: // Logout
+                sellerLoop = false;
+                System.out.println("Logging out...");
+                break;
+            default:
+                System.out.println("Invalid option. Try again.");
+        }
+        }
     }
+
+    }
+

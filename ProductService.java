@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.List;
 
 //ProductService is an intermediary between ProductDAO and user interface
@@ -28,5 +29,18 @@ public class ProductService {
     public List<String> searchProducts(String searchType, String searchQuery)
     {
         return productDao.searchProducts(searchType, searchQuery);
+    }
+
+    public boolean isProductInDatabase(int productID)
+    {
+                try 
+        {
+        return productDao.isProductInDatabase(productID);
+    }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
