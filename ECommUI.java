@@ -32,7 +32,6 @@ public class ECommUI {
         boolean mainLoop = true;
         while (mainLoop == true)
         {
-
         //Login/Register Menu Options
         System.out.println("Main Menu (Select by Number): " + "\n");
         //1. Register
@@ -112,15 +111,18 @@ public class ECommUI {
                         case "buyer":
                             showBuyerMenu(sc, productService);
                             break;
+
                         case "seller":
-                            showSellerMenu(sc, productService);
+                            int sellerID = userService.getSellerIdByUsername(loginUsername);
+                            showSellerMenu(sc, productService, sellerID);
                             break;
+
                         case "admin":
                             showAdminMenu(sc, userService, productService);
                             break;
+
                         default:
                         System.out.println("Invalid role.");
-                        
                         }
                     }
                     break;
@@ -223,9 +225,7 @@ public class ECommUI {
     }
 
     //Created Seller menu with options
-    private static void showSellerMenu(Scanner sc, ProductService productService, String sellerUsername) {
-
-
+    private static void showSellerMenu(Scanner sc, ProductService productService, int sellerID) {
 
         boolean sellerLoop = true;
 
@@ -242,8 +242,11 @@ public class ECommUI {
         switch (choice) {
             case 1: 
                 System.out.println("\n--- Your Products ---");
-                //Need to change to search by sellerID instead of username
-                productService.searchProducts("seller_id", sellerUsername).forEach(System.out::println); // Placeholder
+
+                //Find products by sellerID (convert from int to string for search)
+                String sellerIDString = String.valueOf(sellerID);
+
+                productService.searchProducts("seller_id", sellerIDString).forEach(System.out::println); 
                 break;
 
             case 2: 
