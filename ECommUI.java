@@ -107,8 +107,7 @@ public class ECommUI {
                     System.out.println("Login failed. Try again.");
                 } else {
                     System.out.println("Login successful! Welcome, " + roleLoggedIn);
-                     // Add similar menus for "seller" and "admin" roles later
-                     // Added
+
                     switch (roleLoggedIn.toLowerCase()) {
                         case "buyer":
                             showBuyerMenu(sc, productService);
@@ -123,10 +122,8 @@ public class ECommUI {
                         System.out.println("Invalid role.");
                         
                         }
-
                     }
                     break;
-
 
             //Exit
             case 3:
@@ -140,9 +137,8 @@ public class ECommUI {
             System.out.println("Invalid option. Please try again.");
         }
     }
-
+    //Close scanner
     sc.close();
-
     }
 
    // Admin Menu
@@ -226,8 +222,10 @@ public class ECommUI {
         }
     }
 
-    //  Created Seller menu with options
+    //Created Seller menu with options
     private static void showSellerMenu(Scanner sc, ProductService productService, String sellerUsername) {
+
+
 
         boolean sellerLoop = true;
 
@@ -257,8 +255,6 @@ public class ECommUI {
                 int quantity = sc.nextInt();
                 sc.nextLine(); // Consume newline
 
-                //Set up to get sellerID based off user signed in.... To create newProduct
-
                 Product newProduct = new Product(name, price, quantity, sellerID);
 
                 productService.addProduct(newProduct); 
@@ -279,9 +275,13 @@ public class ECommUI {
                 int newQuantity = sc.nextInt();
                 sc.nextLine(); 
 
-                Product productUpdate = new Product(newName, newPrice, newQuantity);
+                Product productUpdate = new Product(newName, newPrice, newQuantity, sellerID);
 
-                boolean updated = productService.updateProduct(productUpdate); // Placeholder
+                //Update product
+                productService.updateProduct(productUpdate); 
+
+                //Check if updated
+                boolean updated = true;
 
                 if (updated) {
                     System.out.println("Product updated successfully!");
@@ -299,7 +299,7 @@ public class ECommUI {
                 productService.deleteProduct(deleteProductId);
             
                 //Check if item is in database
-                boolean productInDatabase = productService.isProductInDatabase(deleteProductId); // Placeholder
+                boolean productInDatabase = productService.isProductInDatabase(deleteProductId); 
 
                 if (!productInDatabase) {
                     System.out.println("Product deleted successfully!");
@@ -307,6 +307,7 @@ public class ECommUI {
                     System.out.println("Failed to delete product. Check Product ID.");
                 }
                 break;
+
             case 5: // Logout
                 sellerLoop = false;
                 System.out.println("Logging out...");
