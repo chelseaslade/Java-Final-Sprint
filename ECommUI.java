@@ -1,6 +1,7 @@
 //Imports
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class ECommUI {
@@ -18,12 +19,13 @@ public class ECommUI {
         e.printStackTrace();
     }
 
-        //Init scanner
+        //UserService init
         UserService userService = new UserService(); 
 
-        // Placeholder for product related actions.
-        ProductDAO productDAO = new ProductDAO(); 
+        //ProductService init
+        ProductService productService = new ProductService(); 
 
+        //Scanner init
         Scanner sc = new Scanner(System.in);
 
         //Loop for initial menu needed ("Exit" option closes entire program)
@@ -58,45 +60,72 @@ public class ECommUI {
             System.out.println("Enter role (buyer, seller, or admin) ");
             String role = sc.nextLine();
 
-            userService.addUser(username, password, email, role);
+            //Create object based on role 
+            User user = null;
+            if (role.equalsIgnoreCase("admin"))
+            {
+                user = new Admin(username, password, email);
+            }
+            else if (role.equalsIgnoreCase("buyer"))
+            {
+                user = new Buyer(username, password, email);
+            }
+            else if (role.equalsIgnoreCase("seller"))
+            {
+                user = new Seller(username, password, email);
+            }
 
-            // Message showing registration has been successful.
+            //Add the user to database
+            userService.addUser(user);
+
+            //Query to check if added
+            boolean isAdded = userService.isUserInDatabase(user.getUsername());
+            if (isAdded)
+            {
+            //Success
             System.out.println("Registration successful!");
             break;
+            }
+
+            else 
+            {
+            //Failure
+            System.out.println("Registration unsuccessful. Are you sure the user does not already exist?");
+            }
 
             //Login
-            case 2: 
-               System.out.println("Enter username: ");
-               String loginUsername = sc.nextLine();
-               System.out.println("Enter password: ");
-               String loginPassword = sc.nextLine();
+            // case 2: 
+            //    System.out.println("Enter username: ");
+            //    String loginUsername = sc.nextLine();
+            //    System.out.println("Enter password: ");
+            //    String loginPassword = sc.nextLine();
 
                // Placeholder for authentication logic.
-                String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
+                // String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
                     
-                if (roleLoggedIn == null) {
-                    System.out.println("Login failed. Try again.");
-                } else {
-                    System.out.println("Login successful! Welcome, " + roleLoggedIn);
-                     // Add similar menus for "seller" and "admin" roles later
-                     // Added
-                    switch (roleLoggedIn.toLowerCase()) {
-                        case "buyer":
-                            showBuyerMenu(sc, productDAO);
-                            break;
-                        case "seller":
-                            showSellerMenu(sc, productDAO);
-                            break;
-                        case "admin":
-                            showAdminMenu(sc, userService, productDAO);
-                            break;
-                        default:
-                        System.out.println("Invalid role.");
+                // if (roleLoggedIn == null) {
+                //     System.out.println("Login failed. Try again.");
+                // } else {
+                //     System.out.println("Login successful! Welcome, " + roleLoggedIn);
+                //      // Add similar menus for "seller" and "admin" roles later
+                //      // Added
+                //     switch (roleLoggedIn.toLowerCase()) {
+                //         case "buyer":
+                //             showBuyerMenu(sc, productService);
+                //             break;
+                //         case "seller":
+                //             showSellerMenu(sc, productService);
+                //             break;
+                //         case "admin":
+                //             showAdminMenu(sc, userService, productSer);
+                //             break;
+                //         default:
+                //         System.out.println("Invalid role.");
                         
-                        }
+                //         }
 
-                    }
-                    break;
+                //     }
+                //     break;
 
 
             //Exit
@@ -117,7 +146,7 @@ public class ECommUI {
     }
 
    // Admin Menu
-   private static void showAdminMenu(Scanner sc, UserService userService, ProductDAO productDAO) {
+   private static void showAdminMenu(Scanner sc, UserService userService, ProductService productService) {
     boolean adminLoop = true;
     while (adminLoop) {
         System.out.println("\n--- Admin Menu ---");
@@ -131,17 +160,17 @@ public class ECommUI {
 
         switch (choice) {
             case 1:
-                userService.getAllUsers().forEach(System.out::println); // Placeholder
+                userService.viewAllUsers().forEach(System.out::println); 
                 break;
             case 2:
                 System.out.print("Enter User ID to delete: ");
                 int userId = sc.nextInt();
                 sc.nextLine();
-                userService.deleteUser(userId); // Placeholder
+                userService.deleteUser(userId); 
                 System.out.println("User deleted successfully.");
                 break;
             case 3:
-                productDAO.getAllProducts().forEach(System.out::println); // Placeholder
+                productService.viewAllProducts().forEach(System.out::println); 
                 break;
             case 4:
                 adminLoop = false;
@@ -154,7 +183,7 @@ public class ECommUI {
 }
 
     // Buyer menu
-    private static void showBuyerMenu(Scanner sc, ProductDAO productDAO) {
+    private static void showBuyerMenu(Scanner sc, ProductService productService) {
         boolean buyerLoop = true;
         while (buyerLoop) {
             System.out.println("\n--- Buyer Menu ---");
@@ -168,12 +197,24 @@ public class ECommUI {
             switch (choice) {
                 case 1:
                     System.out.println("\n--- Product List ---");
-                    productDAO.getAllProducts().forEach(System.out::println); // Placeholder.
+                    productService.viewAllProducts().forEach(System.out::println); 
                     break;
                 case 2:
-                    System.out.print("Enter product name or category: ");
-                    String keyword = sc.nextLine();
-                    productDAO.searchProducts(keyword).forEach(System.out::println); // Placeholder.
+                    System.out.println("Enter search type ('name', 'product_id, or 'seller_id': ");
+                    String searchType = sc.nextLine();
+                    System.out.print("Enter search query: ");
+                    String searchQuery = sc.nextLine();
+                    List<String> searchResults = productService.searchProducts(searchType, searchQuery);
+
+                    //If no products returned
+                    if (searchResults.isEmpty())
+                    {
+                        System.out.println("No products found for the search query provided.");
+                    }
+                    else
+                    {
+                        searchResults.forEach(System.out::println); //Print each result found
+                    }
                     break;
                 case 3:
                     buyerLoop = false;
@@ -185,25 +226,4 @@ public class ECommUI {
         }
     }
 
-        //Loop for main menu needed ("Exit" option to take back to login)
-
-        //Main Menu Options (Depends on user type logged in)
-        //Admin Menu
-        //1. View User List
-        //2. View Product List
-        //3. Logout
-
-        //Buyer Menu
-        //1. View All Products
-        //2. Search Products
-        //3. Logout
-
-        //Seller Menu
-        //1. View All Currently Listed Products
-        //2. Add New Product
-        //3. Update Currently Listed Product
-        //4. Delete Currently Listed Product
-        //5. Logout
-
     }
-

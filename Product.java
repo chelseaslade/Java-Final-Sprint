@@ -1,12 +1,12 @@
 public class Product {
     private int id;
     private String name;
-    private BigDecimal price; //bigdecimal for precise amt/$
+    private double price;
     private int quantity;
     private int sellerId;
 
     //constructors
-    public Product(String name, BigDecimal price, int quantity, int sellerId){
+    public Product(String name, double price, int quantity, int sellerId){
         this.name = name;
         this.price = price; 
         this.quantity = quantity; 
@@ -15,23 +15,23 @@ public class Product {
 
     //getters and setters
     public int getId(){
-        return id; 
+        return this.id; 
     }
     public void setId(int id){
         this.id = id; 
 
     }
     public String getName(){
-        return name; 
+        return this.name; 
     }
     public void setName(String name){
-        this.name = name
+        this.name = name;
     }
-    public BigDecimal getPrice(){
-        return price;
+    public double getPrice(){
+        return this.price;
     }
-    public void setPrice(BigDecimal price){
-        this.price = getPrice;
+    public void setPrice(double price){
+        this.price = price;
     }
     public int getQuantity(){
         return quantity; 
@@ -39,8 +39,8 @@ public class Product {
     public void setQuantity (int quantity){
         this.quantity = quantity;
     }
-    public in getSellerId(){
-        return sellerId;
+    public int getSellerId(){
+        return this.sellerId;
     }
     public void setSellerId(int sellerId){
         this.sellerId = sellerId;

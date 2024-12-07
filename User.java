@@ -13,9 +13,10 @@ public class User {
         this.email = email;
         this.role = role;
     }
+    
     //getter & setter
 
-    public in getId(){
+    public int getId(){
         return id;
     }
     public void setId(int id){
@@ -30,7 +31,7 @@ public class User {
     public String getPassword(){
         return password;
     }
-    public  void setPassword(String password){
+    public void setPassword(String password){
         this.password = password; 
     }
     public String getEmail(){
