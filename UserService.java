@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public int getSellerIdByUsername(String username) {
-    String query = "SELECT id FROM Users WHERE username = ? AND role = 'seller'";
+    String query = "SELECT user_id FROM Users WHERE username = ? AND role = 'seller'";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)
@@ -46,11 +46,31 @@ public class UserService {
         statement.setString(1, username);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt("id");
+            return resultSet.getInt("user_id");
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
     return -1; // Return -1 if not found
 }
+
+    public String authenticate(String username, String password) {
+        String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
+        try (Connection con = DBConnection.getCon();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, username);
+            ps.setString(2, password);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Return the role if authentication is successful
+                    return rs.getString("role");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Return null if authentication fails
+        return null;
+    }
 }

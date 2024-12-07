@@ -48,7 +48,7 @@ public class ProductService {
     }
 
     public Product getProductByID(int productID) {
-    String query = "SELECT * FROM Products WHERE id = ?";
+    String query = "SELECT * FROM Products WHERE product_id = ?";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) 
