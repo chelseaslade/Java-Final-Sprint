@@ -246,6 +246,7 @@ public class ECommUI {
                 //Find products by sellerID (convert from int to string for search)
                 String sellerIDString = String.valueOf(sellerID);
 
+                //Search products and print list
                 productService.searchProducts("seller_id", sellerIDString).forEach(System.out::println); 
                 break;
 
@@ -258,18 +259,32 @@ public class ECommUI {
                 int quantity = sc.nextInt();
                 sc.nextLine(); // Consume newline
 
+                //Add details to a new product
                 Product newProduct = new Product(name, price, quantity, sellerID);
 
+                //Add new product to database
                 productService.addProduct(newProduct); 
                 System.out.println("Product added successfully!");
                 break;
 
             case 3: 
                 System.out.print("Enter Product ID to update: ");
-                int productId = sc.nextInt();
+                int productID = sc.nextInt();
                 sc.nextLine(); 
 
-                //Added change name in update
+                Product currentProduct = productService.getProductByID(productID);
+                if (currentProduct == null) {
+                    System.out.println("Product not found. Please check the Product ID.");
+                    break; // Exit if the product does not exist
+                }
+
+                // Display the current details
+                System.out.println("Current Product Details: ");
+                System.out.println("Name: " + currentProduct.getName());
+                System.out.println("Price: " + currentProduct.getPrice());
+                System.out.println("Quantity: " + currentProduct.getQuantity());
+
+                //Get new product details
                 System.out.println("Enter new name: ");
                 String newName = sc.nextLine();
                 System.out.print("Enter new price: ");
@@ -278,18 +293,24 @@ public class ECommUI {
                 int newQuantity = sc.nextInt();
                 sc.nextLine(); 
 
+                //Product object with updated details
                 Product productUpdate = new Product(newName, newPrice, newQuantity, sellerID);
 
-                //Update product
+                //Set product ID
+                productUpdate.setId(productID);
+
+                //Update product in database
                 productService.updateProduct(productUpdate); 
 
-                //Check if updated
-                boolean updated = true;
-
-                if (updated) {
+                // Validate the update
+                if (productUpdate != null &&
+                productUpdate.getName().equals(newName) &&
+                productUpdate.getPrice() == newPrice &&
+                productUpdate.getQuantity() == newQuantity) 
+                {
                     System.out.println("Product updated successfully!");
                 } else {
-                    System.out.println("Failed to update product. Check Product ID.");
+                    System.out.println("Failed to update product. Please try again.");
                 }
                 break;
 
