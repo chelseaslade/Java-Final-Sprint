@@ -3,6 +3,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class ECommUI {
     public static void main(String[] args) {
