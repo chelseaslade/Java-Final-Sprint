@@ -10,9 +10,9 @@ public class ECommUI {
         //Test DB Connection
         try (Connection con = DBConnection.getCon()) {
         if (con != null) {
-            System.out.println("Connection successful!");
+            System.out.println("Connection successful!" + "\n");
         } else {
-            System.out.println("Connection failed.");
+            System.out.println("Connection failed." + "\n");
         }
         } catch (SQLException e) {
         e.printStackTrace();
@@ -84,14 +84,14 @@ public class ECommUI {
             if (isAdded)
             {
             //Success
-            System.out.println("Registration successful!");
+            System.out.println("Registration successful!" + "\n");
             break;
             }
 
             else 
             {
             //Failure
-            System.out.println("Registration unsuccessful. Are you sure the user does not already exist?");
+            System.out.println("Registration unsuccessful. Are you sure the user does not already exist?" + "\n");
             }
 
             // Login
@@ -101,14 +101,15 @@ public class ECommUI {
                System.out.println("Enter password: ");
                String loginPassword = sc.nextLine();
 
-            //    Placeholder for authentication logic.
+                //Authenticate user in database, returns role
                 String roleLoggedIn = userService.authenticate(loginUsername, loginPassword); 
                     
                 if (roleLoggedIn == null) {
                     System.out.println("Login failed. Try again.");
                 } else {
-                    System.out.println("Login successful! Welcome, " + roleLoggedIn);
+                    System.out.println("Login successful! Welcome, " + roleLoggedIn + "\n");
 
+                    //Display menu according to role logged in
                     switch (roleLoggedIn.toLowerCase()) {
                         case "buyer":
                             showBuyerMenu(sc, productService);
@@ -133,7 +134,7 @@ public class ECommUI {
             case 3:
             mainLoop = false;
             // Message showing the user has exited.
-            System.out.println("Goodbye!");
+            System.out.println("Goodbye!" + "\n");
             break;
             
             // Default message incase user input is incorrect.
