@@ -46,9 +46,4 @@ public class Seller extends User {
     public void setRole(String role) {
         super.setRole(role);
     }
-
-    // fetch  products from the ProductDAO remove if not needed!
-    public List<Product> getProductsForSale(ProductDAO productDAO) {
-        return productDAO.getProductsBySellerId(this.getUsername());
-    }
 }

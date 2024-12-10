@@ -46,20 +46,4 @@ public class Admin extends User {
         super.setRole(role);
     }
     
-    
-    /* ADMIN METHOD - REVIEWED ECommUI SAW ACTION THERE
-        // delete user 
-    public void deleteUser(User user, UserDAO userDAO){
-       userDAO.deleteUser(user);
-    }
-        //return user
-    public void viewAllUsers(UserDAO userDAO){
-        userDAO.getAllUsers().forEach(user -> System.out.println(getUsername()+ "-" + user.getEmail()))
-    }
-        // view products
-    public void viewAllProducts(ProductDAO productDAO){
-        productDAO.getAllProducts().forEach(product->System.out.println(product.getName()+ "-" +product.getPrice()))
-    } */
 
-
- 

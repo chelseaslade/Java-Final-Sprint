@@ -48,7 +48,7 @@ public void addProduct(Product product)
 // UPDATE PRODUCT DETAIL
 public void updateProduct(Product product) 
 {
-    String query = "UPDATE Products SET name = ?, price = ?, quantity = ? WHERE id = ?";
+    String query = "UPDATE Products SET name = ?, price = ?, quantity = ? WHERE product_id = ?";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) 
@@ -66,7 +66,7 @@ public void updateProduct(Product product)
 
 // DELETE PRODUCT
 public void deleteProduct(int productID) {
-    String query = "DELETE FROM Products WHERE id = ?";
+    String query = "DELETE FROM Products WHERE product_id = ?";
     try (
         Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query)) 
@@ -142,6 +142,24 @@ public List<String> searchProducts(String searchType, String searchQuery)
         e.printStackTrace();
     }
     return productSearch;
+}
+
+//Product in database validation
+public boolean isProductInDatabase(int productID) throws SQLException
+{
+    String query = "SELECT COUNT(*) FROM Products WHERE product_id = ?";
+
+    try (Connection con = DBConnection.getCon();
+    PreparedStatement statement = con.prepareStatement(query)) {
+    
+    statement.setInt(1, productID);
+    try (ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+            return resultSet.getInt(1) > 0; // Return true if count > 0
+        }
+    }
+}
+return false;
 }
 
 }
