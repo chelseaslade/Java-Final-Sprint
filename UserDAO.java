@@ -26,7 +26,7 @@ public class UserDAO {
     public List<String> viewAllUsers()
     {
         List<String> users = new ArrayList<>();
-        String query = "SELECT * FROM Users";
+        String query = "SELECT user_id, username FROM Users";
 
         try (Connection con = DBConnection.getCon();
         PreparedStatement statement = con.prepareStatement(query);
@@ -34,7 +34,10 @@ public class UserDAO {
         {
             while (rs.next())
             {
-                users.add(rs.getString("username"));
+                int userID = rs.getInt("user_id");
+                String username = rs.getString("username");
+
+                users.add("ID: " + userID + ", Username: " + username);
             }
         }
         catch(SQLException e)
@@ -59,26 +62,6 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
-    //Dont need?
-    // //Edit User
-    // public void editUser(User user)
-    // {
-    //     String query = "UPDATE Users SET username = ?, password = ?, email = ?, role = ? WHERE id = ?";
-    //     try (
-    //         Connection con = DBConnection.getCon();
-    //         PreparedStatement statement = con.prepareStatement(query)) 
-    //         {
-    //         statement.setString(1, user.getUsername());
-    //         statement.setString(2, user.getPassword());
-    //         statement.setString(3, user.getEmail());
-    //         statement.setInt(4, user.getId());
-    //         statement.executeUpdate();
-    //     } 
-    //     catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 
     //User in database validation
     public boolean isUserInDatabase(String username) throws SQLException

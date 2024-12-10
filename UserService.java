@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 //UserService is an intermediary between userDAO and user interface
 public class UserService {
     //Init
@@ -54,23 +56,30 @@ public class UserService {
     return -1; // Return -1 if not found
 }
 
-    public String authenticate(String username, String password) {
-        String sql = "SELECT role FROM users WHERE username = ? AND password = ?";
-        try (Connection con = DBConnection.getCon();
-            PreparedStatement ps = con.prepareStatement(sql)) {
-            
-            ps.setString(1, username);
-            ps.setString(2, password);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    // Return the role if authentication is successful
-                    return rs.getString("role");
+    public String authenticate(String username, String plaintextPW) {
+    String sql = "SELECT password, role FROM users WHERE username = ?";
+    try (Connection con = DBConnection.getCon();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        
+        // Set the username parameter
+        ps.setString(1, username);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                // Get the stored hashed password and role
+                String hashedPassword = rs.getString("password");
+                String role = rs.getString("role");
+
+                // Verify the plaintext password against the hashed password
+                if (BCrypt.checkpw(plaintextPW, hashedPassword)) {
+                    // Return the role if the password matches
+                    return role;
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        // Return null if authentication fails
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    // Return null if authentication fails
+    return null;
     }
 }

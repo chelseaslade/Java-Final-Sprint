@@ -58,19 +58,22 @@ public class ECommUI {
             System.out.println("Enter role (buyer, seller, or admin) ");
             String role = sc.nextLine();
 
+            //Create hashed password from user inputted password
+            String hashedPW = PasswordHash.hashPassword(password);
+
             //Create object based on role 
             User user = null;
             if (role.equalsIgnoreCase("admin"))
             {
-                user = new Admin(username, password, email);
+                user = new Admin(username, hashedPW, email);
             }
             else if (role.equalsIgnoreCase("buyer"))
             {
-                user = new Buyer(username, password, email);
+                user = new Buyer(username, hashedPW, email);
             }
             else if (role.equalsIgnoreCase("seller"))
             {
-                user = new Seller(username, password, email);
+                user = new Seller(username, hashedPW, email);
             }
 
             //Add the user to database
@@ -160,21 +163,22 @@ public class ECommUI {
                 userService.viewAllUsers().forEach(System.out::println); 
                 break;
             case 2:
-                System.out.print("Enter User ID to delete: ");
+                System.out.print("\n" + "Enter User ID to delete: " + "\n");
+                userService.viewAllUsers().forEach(System.out::println); 
                 int userId = sc.nextInt();
                 sc.nextLine();
                 userService.deleteUser(userId); 
-                System.out.println("User deleted successfully.");
+                System.out.println("User deleted successfully." + "\n");
                 break;
             case 3:
                 productService.viewAllProducts().forEach(System.out::println); 
                 break;
             case 4:
                 adminLoop = false;
-                System.out.println("Logging out...");
+                System.out.println("\n" + "Logging out..." + "\n");
                 break;
             default:
-                System.out.println("Invalid option. Try again.");
+                System.out.println("Invalid option. Try again." + "\n");
         }
     }
 }
