@@ -201,7 +201,7 @@ public class ECommUI {
                     productService.viewAllProducts().forEach(System.out::println); 
                     break;
                 case 2:
-                    System.out.println("Enter search type ('name', 'product_id, or 'seller_id': ");
+                    System.out.println("Enter search type ('name', 'product_id, or 'seller_id': " + "\n");
                     String searchType = sc.nextLine();
                     System.out.print("Enter search query: ");
                     String searchQuery = sc.nextLine();
@@ -210,7 +210,7 @@ public class ECommUI {
                     //If no products returned
                     if (searchResults.isEmpty())
                     {
-                        System.out.println("No products found for the search query provided.");
+                        System.out.println("No products found for the search query provided." + "\n");
                     }
                     else
                     {
@@ -219,10 +219,10 @@ public class ECommUI {
                     break;
                 case 3:
                     buyerLoop = false;
-                    System.out.println("Logging out...");
+                    System.out.println("Logging out..." + "\n");
                     break;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid option. Try again." + "\n");
             }
         }
     }
@@ -267,22 +267,22 @@ public class ECommUI {
 
                 //Add new product to database
                 productService.addProduct(newProduct); 
-                System.out.println("Product added successfully!");
+                System.out.println("Product added successfully!" + "\n");
                 break;
 
             case 3: 
-                System.out.print("Enter Product ID to update: ");
+                System.out.print("Enter Product ID to update: " + "\n");
                 int productID = sc.nextInt();
                 sc.nextLine(); 
 
                 Product currentProduct = productService.getProductByID(productID);
                 if (currentProduct == null) {
-                    System.out.println("Product not found. Please check the Product ID.");
+                    System.out.println("Product not found. Please check the Product ID." + "\n");
                     break; // Exit if the product does not exist
                 }
 
                 // Display the current details
-                System.out.println("Current Product Details: ");
+                System.out.println("Current Product Details: " + "\n");
                 System.out.println("Name: " + currentProduct.getName());
                 System.out.println("Price: " + currentProduct.getPrice());
                 System.out.println("Quantity: " + currentProduct.getQuantity());
@@ -311,14 +311,14 @@ public class ECommUI {
                 productUpdate.getPrice() == newPrice &&
                 productUpdate.getQuantity() == newQuantity) 
                 {
-                    System.out.println("Product updated successfully!");
+                    System.out.println("Product updated successfully!" + "\n");
                 } else {
                     System.out.println("Failed to update product. Please try again.");
                 }
                 break;
 
             case 4: 
-                System.out.print("Enter Product ID to delete: ");
+                System.out.print("Enter Product ID to delete: " + "\n");
                 int deleteProductId = sc.nextInt();
                 sc.nextLine(); 
 
@@ -329,15 +329,15 @@ public class ECommUI {
                 boolean productInDatabase = productService.isProductInDatabase(deleteProductId); 
 
                 if (!productInDatabase) {
-                    System.out.println("Product deleted successfully!");
+                    System.out.println("Product deleted successfully!" + "\n");
                 } else {
-                    System.out.println("Failed to delete product. Check Product ID.");
+                    System.out.println("Failed to delete product. Check Product ID." + "\n");
                 }
                 break;
 
             case 5: // Logout
                 sellerLoop = false;
-                System.out.println("Logging out...");
+                System.out.println("Logging out..." + "\n");
                 break;
             default:
                 System.out.println("Invalid option. Try again.");
